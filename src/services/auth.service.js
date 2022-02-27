@@ -8,7 +8,7 @@ export class AuthService {
       where: { email },
       select: {
         password: true,
-        tipoUsuario: true,
+        // tipoUsuario: true,
         id: true,
         modulos: true,
         nombre: true,
