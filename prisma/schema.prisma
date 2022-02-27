@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuarios {
+  id              Int      @id @unique @default(autoincrement())
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @updatedAt @map(name: "updated_at")
+  //
+  nombre          String
+  apellido        String
+  email           String   @unique
+  password        String
+  //
+  tiposUsuariosId Int?
+
+  //
+  modulos       ModulosUsuarios[]
+  creador       Tareas[]          @relation("creador")
+  responsable   Tareas[]          @relation("responsable")
+  supervisor    Tareas[]          @relation("supervisor")
+  TiposUsuarios TiposUsuarios?    @relation(fields: [tiposUsuariosId], references: [id])
+
+  @@map(name: "usuarios")
+}
+
+model Modulos {
+  id       Int               @id @unique @default(autoincrement())
+  nombre   String            @unique
+  usuarios ModulosUsuarios[]
+
+  @@map("modulos")
+}
+
+model ModulosUsuarios {
+  assignedAt DateTime @default(now())
+  assignedBy String
+  //
+  usuarioId  Int      @map("usuario_id")
+  moduloId   Int      @map("modulo_id")
+  //
+  usuario    Usuarios @relation(fields: [usuarioId], references: [id])
+  modulo     Modulos  @relation(fields: [moduloId], references: [id])
+
+  @@id([usuarioId, moduloId])
+  @@map("modulos_usuarios")
+}
+
+model TiposUsuarios {
+  id          Int           @id @unique @default(autoincrement())
+  tipoUsuario tiposUsuarios @unique
+  usuarios    Usuarios[]
+}
+
+enum tiposUsuarios {
+  SUPERADMIN
+  ADMIN
+  SUPERVISOR
+  USUARIO
+}
+
+model Tareas {
+  id            Int        @id @unique @default(autoincrement())
+  createdAt     DateTime   @default(now()) @map(name: "created_at")
+  updatedAt     DateTime   @updatedAt @map(name: "updated_at")
+  //
+  tarea         String
+  deadline      DateTime
+  //
+  estadosId     Int?
+  creadorId     Int        @map(name: "creador_id")
+  responsableId Int        @map(name: "responsable_id")
+  supervisorId  Int        @map(name: "supervisor_id")
+  expedienteId  Int?       @map(name: "expediente_id")
+  //
+  creador       Usuarios   @relation("creador", fields: [creadorId], references: [id])
+  responsable   Usuarios   @relation("responsable", fields: [responsableId], references: [id])
+  supervisor    Usuarios   @relation("supervisor", fields: [supervisorId], references: [id])
+  Estados       Estados?   @relation(fields: [estadosId], references: [id])
+  archivos      Archivos[]
+
+  @@map(name: "tareas")
+}
+
+model Archivos {
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  url       String   @unique
+  tareasId  Int?
+  Tareas    Tareas?  @relation(fields: [tareasId], references: [id])
+}
+
+model Estados {
+  id     Int      @id @unique @default(autoincrement())
+  estado estados  @unique
+  Tareas Tareas[]
+}
+
+enum estados {
+  COMPLETO
+  EN_PROCESO
+  EN_REVISION
+  DETENIDO
+}
