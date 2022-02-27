@@ -38,6 +38,9 @@
     "nodemon": "^2.0.15",
     "dotenv-cli": "^4.1.1"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "bugs": {
     "url": "https://github.com/Dematos23/delion-backend/issues"
   },
