@@ -6,8 +6,7 @@ export const tareaRouter = Router();
 
 tareaRouter
   .route("/tareas")
-  .get(TareaController.getTareas)
-  // .get(validarUsuario, TareaController.getTareas)
+  .get(validarUsuario, TareaController.getTareas)
   .post(validarUsuario, TareaController.crearTarea);
 tareaRouter
   .route("/tareas/:id")
