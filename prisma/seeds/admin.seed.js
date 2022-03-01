@@ -9,7 +9,7 @@ export default async (prisma) => {
       apellido: "Matos",
       email: "dmatos@estudiodelion.com.pe",
       password,
-      // tipoUsuario: "SUPERADMIN",
+      tipoUsuario: "SUPERADMIN",
     },
     update: {
       password,
