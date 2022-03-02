@@ -27,7 +27,7 @@ export class TareaController {
 
   static async getTareas(req, res) {
     try {
-      const resultado = await TareaService.getTareas();
+      const resultado = await TareaService.getTareas(req.body);
       return res.status(201).json(resultado);
     } catch (error) {
       return res.status(400).json({

@@ -27,21 +27,26 @@ export class TareaService {
     }
   }
 
-  static async getTareas() {
+  static async getTareas(data) {
     try {
-      const tareas = await prisma.tareas.findMany();
-      tareas.forEach(async (tarea) => {
-        const archivos = await prisma.archivos.findMany({
-          where: { tareasId: tarea.id },
+      let tareas;
+      console.log(data.orderBy);
+      if ((data.orderBy = "tarea")) {
+        tareas = await prisma.tareas.findMany({
+          select: {
+            id: true,
+            tarea: true,
+            deadline: true,
+            estado: true,
+            archivos: true,
+            responsable: { select: { nombre: true, apellido: true } },
+            supervisor: true,
+          },
+          orderBy: { tarea: data.sort },
         });
-        const urls = [];
-        archivos.forEach(async (archivo) => {
-          const url = ArchivosTareaService.devolverURL(archivo.url);
-          urls.push(url);
-        });
-        tarea.urls = urls;
-        console.log(tareas);
-      });
+      } else {
+        console.log("else");
+      }
       return tareas;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
@@ -56,22 +61,12 @@ export class TareaService {
   static async getTarea(id) {
     const tarea = await prisma.tareas.findUnique({
       where: { id },
+      include: { archivos: { select: { id: true, url: true } } },
       rejectOnNotFound: false,
     });
     if (!tarea) {
       return { message: `No existe la tarea con el id ${id}` };
     }
-    const archivosEncontrados = await prisma.archivos.findMany({
-      where: { tareasId: id },
-    });
-
-    const urlsDevueltas = [];
-    archivosEncontrados.forEach((archivo) => {
-      const key = archivo.url;
-      const url = ArchivosTareaService.devolverURL(key);
-      urlsDevueltas.push(url);
-    });
-    tarea.urls = urlsDevueltas;
     return tarea;
   }
 
