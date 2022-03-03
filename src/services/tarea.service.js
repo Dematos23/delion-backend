@@ -30,8 +30,8 @@ export class TareaService {
   static async getTareas(data) {
     try {
       let tareas;
-      console.log(data.orderBy);
-      if ((data.orderBy = "tarea")) {
+      if (data.orderBy == "tarea") {
+        console.log(data.orderBy);
         tareas = await prisma.tareas.findMany({
           select: {
             id: true,
@@ -44,10 +44,10 @@ export class TareaService {
           },
           orderBy: { tarea: data.sort },
         });
+        return tareas;
       } else {
         console.log("else");
       }
-      return tareas;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
