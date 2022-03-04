@@ -20,36 +20,36 @@ model Usuarios {
   tipoUsuario tiposUsuario
 
   //
-  modulos     ModulosUsuarios[]
-  creador     Tareas[]          @relation("creador")
-  responsable Tareas[]          @relation("responsable")
-  supervisor  Tareas[]          @relation("supervisor")
+  // modulos     ModulosUsuarios[]
+  creador     Tareas[] @relation("creador")
+  responsable Tareas[] @relation("responsable")
+  supervisor  Tareas[] @relation("supervisor")
   // TiposUsuario TiposUsuario      @relation(fields: [tipoUsuario], references: [id])
 
   @@map(name: "usuarios")
 }
 
-model Modulos {
-  id       Int               @id @unique @default(autoincrement())
-  nombre   String            @unique
-  usuarios ModulosUsuarios[]
+// model Modulos {
+//   id       Int               @id @unique @default(autoincrement())
+//   nombre   String            @unique
+//   usuarios ModulosUsuarios[]
 
-  @@map("modulos")
-}
+//   @@map("modulos")
+// }
 
-model ModulosUsuarios {
-  assignedAt DateTime @default(now())
-  assignedBy String
-  //
-  usuarioId  Int      @map("usuario_id")
-  moduloId   Int      @map("modulo_id")
-  //
-  usuario    Usuarios @relation(fields: [usuarioId], references: [id])
-  modulo     Modulos  @relation(fields: [moduloId], references: [id])
+// model ModulosUsuarios {
+//   assignedAt DateTime @default(now())
+//   assignedBy String
+//   //
+//   usuarioId  Int      @map("usuario_id")
+//   moduloId   Int      @map("modulo_id")
+//   //
+//   usuario    Usuarios @relation(fields: [usuarioId], references: [id])
+//   modulo     Modulos  @relation(fields: [moduloId], references: [id])
 
-  @@id([usuarioId, moduloId])
-  @@map("modulos_usuarios")
-}
+//   @@id([usuarioId, moduloId])
+//   @@map("modulos_usuarios")
+// }
 
 enum tiposUsuario {
   SUPERADMIN

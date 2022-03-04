@@ -9,10 +9,8 @@ const prisma = new PrismaClient();
 
 async function main() {
   await Promise.all([
-    // modulosSeed(prisma),
-    // modulosUsuariosSeed(prisma),
-    adminSeed(prisma),
-    usuariosSeed(prisma),
+    // adminSeed(prisma),
+    // usuariosSeed(prisma),
     tareasSeed(prisma),
   ]);
 }

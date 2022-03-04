@@ -33,7 +33,9 @@ export class TareaService {
       const sort = data.sort;
       const responsableId = data.responsableId;
       const estado = data.estado;
+      console.log(data);
       if (data.orderBy == "tarea") {
+        console.log("estoy en el else if tarea");
         tareas = await prisma.tareas.findMany({
           where: { responsableId, estado },
           select: {
@@ -48,6 +50,7 @@ export class TareaService {
           orderBy: { tarea: sort },
         });
       } else if (data.orderBy == "deadline") {
+        console.log("estoy en el else if deadline");
         tareas = await prisma.tareas.findMany({
           where: { responsableId, estado },
           select: {
@@ -62,6 +65,7 @@ export class TareaService {
           orderBy: { deadline: sort },
         });
       } else if (data.orderBy == "estado") {
+        console.log("estoy en el else if estado");
         tareas = await prisma.tareas.findMany({
           where: { responsableId, estado },
           select: {
@@ -76,6 +80,7 @@ export class TareaService {
           orderBy: { estado: sort },
         });
       } else if (data.orderBy == "responsable") {
+        console.log("estoy en el else if responsable");
         tareas = await prisma.tareas.findMany({
           where: { responsableId, estado },
           select: {
@@ -90,6 +95,7 @@ export class TareaService {
           orderBy: { responsable: { nombre: sort } },
         });
       } else if (data.orderBy == "supervisor") {
+        console.log("estoy en el else if supervisor");
         tareas = await prisma.tareas.findMany({
           where: { responsableId, estado },
           select: {
@@ -104,8 +110,9 @@ export class TareaService {
           orderBy: { supervisor: { nombre: sort } },
         });
       } else {
+        console.log("estoy en el else");
         tareas = await prisma.tareas.findMany({
-          where: { responsableId, estado },
+          where: { OR: [{ estado: "EN_PROCESO" }, { estado: "EN_REVISION" }] },
           select: {
             id: true,
             tarea: true,
@@ -115,7 +122,7 @@ export class TareaService {
             responsable: { select: { id: true, nombre: true, apellido: true } },
             supervisor: { select: { id: true, nombre: true, apellido: true } },
           },
-          orderBy: { deadline: sort },
+          orderBy: { deadline: "asc" },
         });
       }
       return tareas;

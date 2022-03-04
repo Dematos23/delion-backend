@@ -1,10 +1,15 @@
-import { tareaDto } from "../services/dtos/request/tarea.dto.js";
+import {
+  crearTareaDto,
+  getTareasDto,
+} from "../services/dtos/request/tareas.dto.js";
 import { TareaService } from "../services/tarea.service.js";
 
 export class TareaController {
   static async crearTarea(req, res) {
     try {
-      const { tarea, categoria, responsableId, deadline } = tareaDto(req.body);
+      const { tarea, categoria, responsableId, deadline } = crearTareaDto(
+        req.body
+      );
       const { estado, creadorId, supervisorId } = req.body;
       const resultado = await TareaService.crearTarea({
         tarea,
@@ -27,8 +32,9 @@ export class TareaController {
 
   static async getTareas(req, res) {
     try {
-      const resultado = await TareaService.getTareas(req.body);
-      return res.status(201).json(resultado);
+      const data = getTareasDto(req.body);
+      const resultado = await TareaService.getTareas(data);
+      return res.status(200).json(resultado);
     } catch (error) {
       return res.status(400).json({
         message: "CONTROLLER Error al consultar las tareas",
