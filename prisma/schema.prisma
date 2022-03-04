@@ -107,5 +107,4 @@ enum estados {
   COMPLETO
   EN_PROCESO
   EN_REVISION
-  DETENIDO
 }

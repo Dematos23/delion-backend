@@ -5,7 +5,7 @@ export default async (prisma) => {
     const superadminId = 1;
     const tarea = `${faker.word.verb()} the task`;
     const deadline = faker.date.future();
-    const estados = ["COMPLETO", "EN_PROCESO", "EN_REVISION", "DETENIDO"];
+    const estados = ["COMPLETO", "EN_PROCESO", "EN_REVISION"];
 
     function entero(min, max) {
       min = Math.ceil(min);
@@ -19,8 +19,8 @@ export default async (prisma) => {
         deadline,
         estado: estados[entero(0, estados.length)],
         creadorId: superadminId,
-        responsableId: entero(1, superadminId),
-        supervisorId: entero(1, superadminId),
+        responsableId: entero(1, 22),
+        supervisorId: entero(1, 22),
       },
     });
   }

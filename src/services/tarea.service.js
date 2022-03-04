@@ -30,11 +30,12 @@ export class TareaService {
   static async getTareas(data) {
     try {
       let tareas;
-      const orderBy = data.orderBy;
       const sort = data.sort;
-      console.log(data.sort);
+      const responsableId = data.responsableId;
+      const estado = data.estado;
       if (data.orderBy == "tarea") {
         tareas = await prisma.tareas.findMany({
+          where: { responsableId, estado },
           select: {
             id: true,
             tarea: true,
@@ -48,6 +49,7 @@ export class TareaService {
         });
       } else if (data.orderBy == "deadline") {
         tareas = await prisma.tareas.findMany({
+          where: { responsableId, estado },
           select: {
             id: true,
             tarea: true,
@@ -61,6 +63,7 @@ export class TareaService {
         });
       } else if (data.orderBy == "estado") {
         tareas = await prisma.tareas.findMany({
+          where: { responsableId, estado },
           select: {
             id: true,
             tarea: true,
@@ -74,6 +77,7 @@ export class TareaService {
         });
       } else if (data.orderBy == "responsable") {
         tareas = await prisma.tareas.findMany({
+          where: { responsableId, estado },
           select: {
             id: true,
             tarea: true,
@@ -83,10 +87,11 @@ export class TareaService {
             responsable: { select: { id: true, nombre: true, apellido: true } },
             supervisor: { select: { id: true, nombre: true, apellido: true } },
           },
-          orderBy: { responsable: sort },
+          orderBy: { responsable: { nombre: sort } },
         });
       } else if (data.orderBy == "supervisor") {
         tareas = await prisma.tareas.findMany({
+          where: { responsableId, estado },
           select: {
             id: true,
             tarea: true,
@@ -96,20 +101,21 @@ export class TareaService {
             responsable: { select: { id: true, nombre: true, apellido: true } },
             supervisor: { select: { id: true, nombre: true, apellido: true } },
           },
-          orderBy: { supervisor: sort },
+          orderBy: { supervisor: { nombre: sort } },
         });
       } else {
         tareas = await prisma.tareas.findMany({
+          where: { responsableId, estado },
           select: {
-            // id: true,
-            // tarea: true,
+            id: true,
+            tarea: true,
             deadline: true,
-            // estado: true,
-            // archivos: true,
-            // responsable: { select: { id: true, nombre: true, apellido: true } },
-            // supervisor: { select: { id: true, nombre: true, apellido: true } },
+            estado: true,
+            archivos: true,
+            responsable: { select: { id: true, nombre: true, apellido: true } },
+            supervisor: { select: { id: true, nombre: true, apellido: true } },
           },
-          orderBy: { deadline: "asc" },
+          orderBy: { deadline: sort },
         });
       }
       return tareas;
