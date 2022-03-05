@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 const password = hashSync("Estudio123.", 10);
 
 export default async (prisma) => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     const nombre = faker.name.firstName();
     const apellido = faker.name.lastName();
     const email = faker.internet.email(
@@ -12,9 +12,16 @@ export default async (prisma) => {
       apellido,
       "estudiodelion.com.pe"
     );
-    const tiposUsuario = ["SUPERADMIN", "ADMIN", "SUPERVISOR", "USUARIO"];
+    const tiposUsuario = ["ADMIN", "SUPERVISOR", "USUARIO"];
+    const equipos = [
+      "COBRANZA",
+      "INTERNACIONAL",
+      "HISPANA",
+      "COBRANZA",
+      "GERENCIA",
+    ];
 
-    function tipo(min, max) {
+    function entero(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min) + min);
@@ -26,7 +33,8 @@ export default async (prisma) => {
         apellido,
         email,
         password,
-        tipoUsuario: tiposUsuario[tipo(1, tiposUsuario.length)],
+        tipoUsuario: tiposUsuario[entero(0, tiposUsuario.length)],
+        equiposId: entero(1, equipos.length),
       },
     });
   }

@@ -24,9 +24,8 @@ model Usuarios {
   creador     Tareas[] @relation("creador")
   responsable Tareas[] @relation("responsable")
   supervisor  Tareas[] @relation("supervisor")
-
-  Equipos   Equipos? @relation(fields: [equiposId], references: [id])
-  equiposId Int?
+  equipo      Equipos? @relation(fields: [equiposId], references: [id])
+  equiposId   Int?     @map("equipos_id")
   @@map(name: "usuarios")
 }
 
