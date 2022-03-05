@@ -31,3 +31,17 @@ export async function validarUsuario(req, res, next) {
   req.usuario = usuario;
   next();
 }
+
+export async function validarSuperadmin(req, res, next) {
+  const creador = await prisma.usuarios.findUnique({
+    where: { id: req.body.creadorId },
+    select: { tipoUsuario: true },
+  });
+  if (!(creador.tipoUsuario == "SUPERADMIN")) {
+    return res.status(401).json({
+      message: "Se necesita privilegios de Superadministrador",
+    });
+  }
+  req.usuario = creador;
+  next();
+}

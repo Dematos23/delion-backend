@@ -1,12 +1,13 @@
 import validator from "validator";
 import { prisma } from "../../../prisma.js";
 
-export function usuariosDto({
+export async function usuariosDto({
   nombre,
   apellido,
   email,
   password,
   tipoUsuario,
+  equipo,
 }) {
   if (validator.isEmpty(nombre)) {
     throw Error("El nombre del usuario no puede estar vacio");
@@ -23,7 +24,11 @@ export function usuariosDto({
   if (validator.isEmpty(tipoUsuario)) {
     throw Error("El nombre del usuario no puede estar vacio");
   }
-  return { nombre, apellido, email, password, tipoUsuario };
+  const equipoEncontrado = await prisma.equipos.findUnique({
+    where: { nombre: equipo },
+  });
+  const equipoId = equipoEncontrado.id;
+  return { nombre, apellido, email, password, tipoUsuario, equipoId };
 }
 
 // if (validator.isEmpty(modulos)) {

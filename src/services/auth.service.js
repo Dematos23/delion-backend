@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 export class AuthService {
   static async login({ email, password }) {
+    console.log("auth service");
     const usuarioEcontrado = await prisma.usuarios.findUnique({
       where: { email },
       select: {

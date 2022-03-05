@@ -10,20 +10,19 @@ export default async (prisma) => {
   const superadmin = await prisma.usuarios.findUnique({
     where: { email: "dmatos@estudiodelion.com.pe" },
   });
+  const usuarios = await prisma.usuarios.findMany({ select: { id: true } });
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 100; i++) {
     const tarea = `${faker.word.verb()} the task`;
     const deadline = faker.date.future();
 
-    const usuarios = await prisma.usuarios.findMany({ select: { id: true } });
-    console.log(usuarios);
     const data = {
       tarea,
       deadline,
       estado: estados[entero(0, estados.length)],
       creador: { connect: { id: superadmin.id } },
-      responsable: { connect: { id: entero(1, usuarios.length) } },
-      supervisor: { connect: { id: entero(1, usuarios.length) } },
+      responsable: { connect: { id: entero(2, usuarios.length) } },
+      supervisor: { connect: { id: entero(2, usuarios.length) } },
     };
 
     await prisma.tareas.create({ data });

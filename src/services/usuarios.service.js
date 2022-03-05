@@ -4,22 +4,9 @@ import { hashSync } from "bcrypt";
 
 export class UsuariosService {
   static async crearUsuario(data) {
-    // const password = hashSync(data.password, 10);
-    // const usuarioAsignador = prisma.usuarios.findUnique({
-    //   where: { id: data.usuarioasignador },
-    // });
+    const password = hashSync(data.password, 10);
+    console.log(data);
     try {
-      const nuevaTarea = await prisma.tareas.create({
-        data: {
-          tarea: data.tarea,
-          categoria: data.categoria,
-          estado: data.estado,
-          deadline: data.deadline,
-          creadorId: data.creadorId,
-          responsableId: data.responsableId,
-          supervisorId: data.supervisorId,
-        },
-      });
       const nuevoUsuario = await prisma.usuarios.create({
         data: {
           nombre: data.nombre,
@@ -27,10 +14,11 @@ export class UsuariosService {
           email: data.email,
           password,
           tipoUsuario: data.tipoUsuario,
+          equiposId: data.equipoId,
         },
       });
-      console.log("nuevoUsuario");
-      return { cotent: nuevaTarea };
+
+      return nuevoUsuario;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
