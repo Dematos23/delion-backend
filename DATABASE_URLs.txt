@@ -1,1 +1,2 @@
 DATABASE_URL=postgresql://postgres:root@localhost:5432/delion-backend
+DATABASE_URL=postgres://idzmexvvvsdvgp:74e4e2e3843353b06c8b3f1d28a6c37f7a4de97b49e9ff978e079513461b53db@ec2-3-225-79-57.compute-1.amazonaws.com:5432/degfdq1ua5irb4
