@@ -17,16 +17,68 @@ model Usuarios {
   email       String       @unique
   password    String
   //
-  tipoUsuario tiposUsuario
+  tipoUsuario tiposUsuario @map("tipo_usuario")
 
   //
   // modulos     ModulosUsuarios[]
   creador     Tareas[] @relation("creador")
   responsable Tareas[] @relation("responsable")
   supervisor  Tareas[] @relation("supervisor")
-  // TiposUsuario TiposUsuario      @relation(fields: [tipoUsuario], references: [id])
 
+  Equipos   Equipos? @relation(fields: [equiposId], references: [id])
+  equiposId Int?
   @@map(name: "usuarios")
+}
+
+model Tareas {
+  id            Int        @id @unique @default(autoincrement())
+  createdAt     DateTime   @default(now()) @map(name: "created_at")
+  updatedAt     DateTime   @updatedAt @map(name: "updated_at")
+  //
+  tarea         String
+  deadline      DateTime
+  //
+  estado        estados
+  creadorId     Int        @map(name: "creador_id")
+  responsableId Int        @map(name: "responsable_id")
+  supervisorId  Int        @map(name: "supervisor_id")
+  // expedienteId  Int?       @map(name: "expediente_id")
+  //
+  creador       Usuarios   @relation("creador", fields: [creadorId], references: [id])
+  responsable   Usuarios   @relation("responsable", fields: [responsableId], references: [id])
+  supervisor    Usuarios   @relation("supervisor", fields: [supervisorId], references: [id])
+  // Estados       Estados?   @relation(fields: [estadosId], references: [id])
+  archivos      Archivos[]
+
+  @@map(name: "tareas")
+}
+
+model Archivos {
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  url       String   @unique
+  tareasId  Int?     @map("tareas_id")
+  Tareas    Tareas?  @relation(fields: [tareasId], references: [id])
+}
+
+model Equipos {
+  id        Int        @id @unique @default(autoincrement())
+  createdAt DateTime   @default(now()) @map("created_at")
+  nombre    String     @unique
+  miembros  Usuarios[]
+}
+
+enum tiposUsuario {
+  SUPERADMIN
+  ADMIN
+  SUPERVISOR
+  USUARIO
+}
+
+enum estados {
+  COMPLETO
+  EN_PROCESO
+  EN_REVISION
 }
 
 // model Modulos {
@@ -50,61 +102,3 @@ model Usuarios {
 //   @@id([usuarioId, moduloId])
 //   @@map("modulos_usuarios")
 // }
-
-enum tiposUsuario {
-  SUPERADMIN
-  ADMIN
-  SUPERVISOR
-  USUARIO
-}
-
-// model TiposUsuario {
-//   id          Int          @id @unique @default(autoincrement())
-//   tipoUsuario tiposUsuario @unique @map("tipo_usuario")
-//   usuarios    Usuarios[]
-
-//   @@map("tipos_usuario")
-// }
-
-model Tareas {
-  id            Int        @id @unique @default(autoincrement())
-  createdAt     DateTime   @default(now()) @map(name: "created_at")
-  updatedAt     DateTime   @updatedAt @map(name: "updated_at")
-  //
-  tarea         String
-  deadline      DateTime
-  //
-  estado        estados
-  creadorId     Int        @map(name: "creador_id")
-  responsableId Int        @map(name: "responsable_id")
-  supervisorId  Int        @map(name: "supervisor_id")
-  expedienteId  Int?       @map(name: "expediente_id")
-  //
-  creador       Usuarios   @relation("creador", fields: [creadorId], references: [id])
-  responsable   Usuarios   @relation("responsable", fields: [responsableId], references: [id])
-  supervisor    Usuarios   @relation("supervisor", fields: [supervisorId], references: [id])
-  // Estados       Estados?   @relation(fields: [estadosId], references: [id])
-  archivos      Archivos[]
-
-  @@map(name: "tareas")
-}
-
-model Archivos {
-  id        Int      @id @unique @default(autoincrement())
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  url       String   @unique
-  tareasId  Int?
-  Tareas    Tareas?  @relation(fields: [tareasId], references: [id])
-}
-
-// model Estados {
-//   id     Int      @id @unique @default(autoincrement())
-//   estado estados  @unique
-//   Tareas Tareas[]
-// }
-
-enum estados {
-  COMPLETO
-  EN_PROCESO
-  EN_REVISION
-}

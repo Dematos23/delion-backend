@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 const password = hashSync("Estudio123.", 10);
 
 export default async (prisma) => {
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 10; i++) {
     const nombre = faker.name.firstName();
     const apellido = faker.name.lastName();
     const email = faker.internet.email(

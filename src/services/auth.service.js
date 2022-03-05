@@ -10,7 +10,6 @@ export class AuthService {
         password: true,
         // tipoUsuario: true,
         id: true,
-        modulos: true,
         nombre: true,
         apellido: true,
       },

@@ -1,25 +1,16 @@
 import {
   crearTareaDto,
   getTareasDto,
+  putTareaDto,
 } from "../services/dtos/request/tareas.dto.js";
 import { TareaService } from "../services/tarea.service.js";
 
 export class TareaController {
   static async crearTarea(req, res) {
     try {
-      const { tarea, categoria, responsableId, deadline } = crearTareaDto(
-        req.body
-      );
-      const { estado, creadorId, supervisorId } = req.body;
-      const resultado = await TareaService.crearTarea({
-        tarea,
-        categoria,
-        estado,
-        deadline: new Date(deadline),
-        creadorId,
-        responsableId,
-        supervisorId,
-      });
+      const data = crearTareaDto(req.body);
+      data.deadline = new Date(req.body.deadline);
+      const resultado = await TareaService.crearTarea(data);
       return res.status(201).json(resultado);
     } catch (error) {
       console.log(error);
@@ -69,14 +60,12 @@ export class TareaController {
 
   static async putTarea(req, res) {
     const id = +req.params.id;
-    const { tarea, categoria, responsableId, deadline } = tareaDto(req.body);
-    const { estado, creadorId, supervisorId } = req.body;
+    const { tarea, responsableId, deadline, estado, supervisorId } =
+      putTareaDto(req.body);
     const data = {
       tarea,
-      categoria,
       estado,
       deadline: new Date(deadline),
-      creadorId,
       responsableId,
       supervisorId,
     };

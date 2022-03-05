@@ -1,61 +1,110 @@
 import validator from "validator";
 
-export function crearTareaDto({ tarea, categoria, responsableId, deadline }) {
+export function crearTareaDto({
+  tarea,
+  creadorId,
+  responsableId,
+  supervisorId,
+  estado,
+  deadline,
+}) {
   if (validator.isEmpty(tarea)) {
     throw Error("DTO: El nombre de la tarea no puede estar vacío");
   }
-  if (validator.isEmpty(categoria)) {
-    throw Error("DTO: Es necesario seleccionar una categoria");
+  if (!(typeof creadorId == "number")) {
+    throw Error("DTO: Es necesario indicar el id del creado => Int");
   }
-  if (validator.isEmpty(responsableId.toString())) {
-    throw Error("DTO: Es necesario asignar un responsable para la tarea");
+  if (!(typeof responsableId == "number")) {
+    throw Error("DTO: Es necesario indicar el id del responsable => Int");
+  }
+  if (!(typeof supervisorId == "number")) {
+    throw Error("DTO: Es necesario indicar el id del supervisor => Int");
   }
   if (!validator.isDate(deadline.toString())) {
     throw Error("DTO: Es necesario asignar un deadline para la tarea");
   }
-  return { tarea, categoria, responsableId, deadline };
+  if (
+    !(estado == "COMPLETO") &&
+    !(estado == "EN_PROCESO") &&
+    !(estado == "EN_REVISION")
+  ) {
+    throw Error("DTO: estado no contiene un valor valido");
+  }
+  return { tarea, creadorId, responsableId, supervisorId, deadline, estado };
 }
 
 export function getTareasDto({
-  justLogin,
   orderBy,
   sort,
   responsableId,
+  supervisorId,
   estado,
 }) {
   if (
-    justLogin == undefined &&
-    orderBy == undefined &&
-    sort == undefined &&
     responsableId == undefined &&
+    supervisorId == undefined &&
     estado == undefined
   ) {
-    throw Error(
-      "DTO: Es necesario especificar al menos el valor de justLogin para cualquier consulta de tareas"
-    );
+    throw Error("DTO: No se ha indicado ningún criterio de filtrado");
   }
-  if (
-    justLogin == undefined ||
-    validator.isEmpty(justLogin.toString()) ||
-    !(typeof justLogin == "boolean")
-  ) {
-    throw Error(
-      "DTO: Es necesario especificar correctamente el valor de justLogin => boolean: true para la primera consulta de tareas (filtro y ordenamiento por default) o false para un filtro y ordenamiento específicos"
-    );
-  }
-  if (justLogin == true && (orderBy || sort || responsableId || estado)) {
-    throw Error(
-      "DTO: justLogin = true & se ha colocado orderBy || sort || responsableId || estado. En la consulta inicial el UNICO argumento debe ser justLogin con valor true => boolean. Si se está realizando un filtrado u ordenamiento de tareas, el valor de justLogin debe ser false => boolean. Si se está realizando"
-    );
-  }
-  if (orderBy == undefined || sort == undefined) {
+  if ((orderBy && sort == undefined) || (orderBy == undefined && sort)) {
     throw Error(
       "DTO: Para ordernar las tareas es necesario especificar el valor de sort => String: 'asc' or 'desc'; y orderBy => String: tarea, deadline, responsable."
     );
   }
-  if (!validator.isNumeric(responsableId.toString())) {
-    throw Error("DTO: responsableId debe ser enero => Int");
+  if (!(typeof responsableId == "number") && !(responsableId == undefined)) {
+    throw Error("DTO: responsableId debe ser entero");
+  }
+  if (!(typeof supervisorId == "number") && !(supervisorId == undefined)) {
+    throw Error("DTO: responsableId debe ser entero");
+  }
+  estado.forEach((e) => {
+    if (!(e == "EN_PROCESO") && !(e == "EN_REVISION") && !(e == "COMPLETO")) {
+      throw Error("DTO: estado no contiene un valor valido");
+    }
+  });
+  if (orderBy == undefined && sort == undefined) {
+    orderBy = "deadline";
+    sort = "asc";
   }
 
-  return { orderBy, sort, responsableId, estado };
+  return { orderBy, sort, responsableId, supervisorId, estado };
+}
+
+export function putTareaDto({
+  tarea,
+  responsableId,
+  supervisorId,
+  deadline,
+  estado,
+}) {
+  if (
+    tarea == undefined &&
+    responsableId == undefined &&
+    supervisorId == undefined &&
+    deadline == undefined &&
+    estado == undefined
+  ) {
+    throw Error(
+      "DTO: Es necesario especificar al menos una propiedad para actualizar la tarea"
+    );
+  }
+  if (validator.isEmpty(tarea)) {
+    throw Error("DTO: Tarea debe ser un String con al menos un caracter");
+  }
+  if (
+    !(estado == "COMPLETO") &&
+    !(estado == "EN_PROCESO") &&
+    !(estado == "EN_REVISION")
+  ) {
+    throw Error("DTO: estado no contiene un valor valido");
+  }
+  if (!(typeof responsableId == "number")) {
+    throw Error("DTO: responsableId debe ser entero");
+  }
+  if (!(typeof supervisorId == "number")) {
+    throw Error("DTO: responsableId debe ser entero");
+  }
+
+  return { tarea, responsableId, supervisorId, deadline, estado };
 }
