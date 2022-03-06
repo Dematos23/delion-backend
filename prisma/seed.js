@@ -9,12 +9,16 @@ const { PrismaClient } = Prisma;
 const prisma = new PrismaClient();
 
 async function main() {
-  await Promise.all([
-    equiposSeed(prisma),
-    // adminSeed(prisma),
-    // usuariosSeed(prisma),
-    // tareasSeed(prisma),
-  ]);
+  // await Promise.all([
+  //   equiposSeed(prisma),
+  //   adminSeed(prisma),
+  //   usuariosSeed(prisma),
+  //   tareasSeed(prisma),
+  // ]);
+  await equiposSeed(prisma);
+  await adminSeed(prisma);
+  await usuariosSeed(prisma);
+  await tareasSeed(prisma);
 }
 
 main()

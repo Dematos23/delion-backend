@@ -1,2 +1,12 @@
 DATABASE_URL=postgresql://postgres:root@localhost:5432/delion-backend
 DATABASE_URL=postgres://idzmexvvvsdvgp:74e4e2e3843353b06c8b3f1d28a6c37f7a4de97b49e9ff978e079513461b53db@ec2-3-225-79-57.compute-1.amazonaws.com:5432/degfdq1ua5irb4
+
+DATABASE_URL=postgresql://aiebhzngjiuosv:b390295c60b2c9944d57573fab7f0d6d9ae7ad4064fff81e3d8c417a82daec3a@ec2-34-230-110-100.compute-1.amazonaws.com
+:5432/ddij3r9nnjtse5
+
+PRISMA231093
+query:
+prisma://aws-us-east-1.prisma-data.com/?api_key=BFOfIIBl8KF9CwPMSzV0r9dMPl_fj-J2cPUAooceS6fsyWbfkVfJUtQWMEeOTRqk
+
+run migrations:
+postgres://jazmwasnbspyxp:4329dfede9ebe0b176c7a46f2ecb269f1990aa0aaf7144d9a89571377ecaa99e@ec2-54-83-21-198.compute-1.amazonaws.com:5432/dfc88jhi4qlq4t
