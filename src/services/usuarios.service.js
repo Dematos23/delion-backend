@@ -28,4 +28,20 @@ export class UsuariosService {
       }
     }
   }
+
+  static async deleteUsuario(id) {
+    try {
+      const usuarioEliminado = await prisma.usuarios.findUnique({
+        where: { id },
+      });
+      return usuarioEliminado;
+    } catch (error) {
+      if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
+        return {
+          message: "SERVICE Error al eliminar el usuario",
+          content: error.message,
+        };
+      }
+    }
+  }
 }

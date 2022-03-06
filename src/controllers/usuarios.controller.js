@@ -15,4 +15,16 @@ export class UsuariosController {
       console.log(error);
     }
   }
+
+  static async deleteUsuario(req, res) {
+    try {
+      const resultado = await UsuariosService.deleteUsuario(+req.params.id);
+      return res.status(201).json(resultado);
+    } catch (error) {
+      return res.status(400).json({
+        message: "CONTROLLER Error al eliminar el usuario",
+        content: error.message,
+      });
+    }
+  }
 }
