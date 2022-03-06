@@ -1,4 +1,4 @@
-const data = [
+const equipos = [
   { nombre: "LEGAL" },
   { nombre: "INTERNACIONAL" },
   { nombre: "HISPANA" },
@@ -7,7 +7,7 @@ const data = [
 ];
 
 export default async (prisma) => {
-  data.forEach(async (element) => {
+  equipos.forEach(async (element) => {
     await prisma.equipos.create({ data: element });
   });
 };
