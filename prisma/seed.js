@@ -11,9 +11,9 @@ const prisma = new PrismaClient();
 async function main() {
   await Promise.all([
     equiposSeed(prisma),
-    adminSeed(prisma),
-    usuariosSeed(prisma),
-    tareasSeed(prisma),
+    // adminSeed(prisma),
+    // usuariosSeed(prisma),
+    // tareasSeed(prisma),
   ]);
 }
 
