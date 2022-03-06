@@ -45,11 +45,18 @@ export class TareaService {
           tarea: true,
           deadline: true,
           estado: true,
-          archivos: true,
+          archivos: { select: { url: true } },
           responsable: { select: { id: true, nombre: true, apellido: true } },
           supervisor: { select: { id: true, nombre: true, apellido: true } },
         },
         orderBy: { [data.orderBy]: data.sort },
+      });
+
+      tareas.forEach((tarea) => {
+        tarea.archivos.forEach((archivo) => {
+          const nuevaUrl = ArchivosTareaService.devolverURL(archivo.url);
+          archivo.url = nuevaUrl;
+        });
       });
 
       return tareas;
@@ -66,12 +73,17 @@ export class TareaService {
   static async getTarea(id) {
     const tarea = await prisma.tareas.findUnique({
       where: { id },
-      include: { archivos: { select: { id: true, url: true } } },
+      include: { archivos: { select: { url: true } } },
       rejectOnNotFound: false,
     });
     if (!tarea) {
       return { message: `No existe la tarea con el id ${id}` };
     }
+    tarea.archivos.forEach((archivo) => {
+      const nuevaUrl = ArchivosTareaService.devolverURL(archivo.url);
+      archivo.url = nuevaUrl;
+    });
+
     return tarea;
   }
 
