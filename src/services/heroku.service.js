@@ -1,5 +1,5 @@
 import Prisma from "@prisma/client";
-import adminSeed from "../../prisma/seeds/admin.seed";
+import adminSeed from "../../prisma/seeds/admin.seed.js";
 import tareasSeed from "../../prisma/seeds/tareas.seed.js";
 import usuariosSeed from "../../prisma/seeds/usuarios.seed.js";
 import equiposSeed from "../../prisma/seeds/equipos.seed.js";
