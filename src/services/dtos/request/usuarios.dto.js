@@ -31,6 +31,25 @@ export async function usuariosDto({
   return { nombre, apellido, email, password, tipoUsuario, equipoId };
 }
 
+export async function deleteUsuarioDto(
+  usuarioEliminadorId,
+  usuarioParaEliminarId
+) {
+  if (!(typeof usuarioEliminadorId == "number")) {
+    throw Error("El id del usuario eliminador debe ser un entero");
+  }
+  if (!(typeof usuarioParaEliminarId == "number")) {
+    throw Error("El id del usuario para eliminar debe ser un entero");
+  }
+  const usuarioEliminador = await prisma.usuarios.findUnique({
+    where: { id: usuarioEliminadorId },
+  });
+  if (!(usuarioEliminador.tipoUsuario = "SUPERADMIN")) {
+    throw Error("Se necesitan privilegios de super administrador");
+  }
+  return { usuarioParaEliminarId };
+}
+
 // if (validator.isEmpty(modulos)) {
 //   throw Error("El usuario debe tener asignado al menos 1 modulo");
 // }

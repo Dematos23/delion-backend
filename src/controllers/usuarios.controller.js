@@ -1,5 +1,8 @@
 import { UsuariosService } from "../services/usuarios.service.js";
-import { usuariosDto } from "../services/dtos/request/usuarios.dto.js";
+import {
+  usuariosDto,
+  deleteUsuarioDto,
+} from "../services/dtos/request/usuarios.dto.js";
 
 export class UsuariosController {
   static async crearUsuario(req, res) {
@@ -18,7 +21,13 @@ export class UsuariosController {
 
   static async deleteUsuario(req, res) {
     try {
-      const resultado = await UsuariosService.deleteUsuario(+req.params.id);
+      const { usuarioParaEliminarId } = deleteUsuarioDto(
+        req.body.usuarioEliminadorId,
+        +req.params.id
+      );
+      const resultado = await UsuariosService.deleteUsuario(
+        usuarioParaEliminarId
+      );
       return res.status(201).json(resultado);
     } catch (error) {
       return res.status(400).json({
