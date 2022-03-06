@@ -13,6 +13,7 @@ export async function main() {
   await adminSeed(prisma);
   await usuariosSeed(prisma);
   await tareasSeed(prisma);
+  return { message: "Heroku Seed completo" };
 }
 
 // import { prisma } from "../prisma.js";
