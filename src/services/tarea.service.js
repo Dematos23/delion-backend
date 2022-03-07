@@ -23,7 +23,6 @@ export class TareaService {
       const responsableId = data.responsableId;
       const supervisorId = data.supervisorId;
       const estado = data.estado;
-
       let where;
       if (estado == undefined) {
         where = { estado: undefined, responsableId, supervisorId };
@@ -37,7 +36,6 @@ export class TareaService {
         }
         where = { OR: whereOr, responsableId, supervisorId };
       }
-
       const tareas = await prisma.tareas.findMany({
         where: where,
         select: {
@@ -45,7 +43,7 @@ export class TareaService {
           tarea: true,
           deadline: true,
           estado: true,
-          archivos: { select: { url: true } },
+          archivos: { select: { nombre: true, url: true } },
           responsable: { select: { id: true, nombre: true, apellido: true } },
           supervisor: { select: { id: true, nombre: true, apellido: true } },
         },
@@ -73,7 +71,7 @@ export class TareaService {
   static async getTarea(id) {
     const tarea = await prisma.tareas.findUnique({
       where: { id },
-      include: { archivos: { select: { url: true } } },
+      include: { archivos: { select: { nombre: true, url: true } } },
       rejectOnNotFound: false,
     });
     if (!tarea) {

@@ -58,6 +58,7 @@ model Archivos {
   url       String   @unique
   tareasId  Int?     @map("tareas_id")
   Tareas    Tareas?  @relation(fields: [tareasId], references: [id])
+  nombre    String   @default("archivo")
 }
 
 model Equipos {

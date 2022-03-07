@@ -27,6 +27,7 @@ export class ArchivosTareaService {
       data: {
         url: Key,
         tareasId: data.tareaId,
+        nombre: data.filename,
       },
     });
     return url;

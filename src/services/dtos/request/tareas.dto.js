@@ -58,11 +58,13 @@ export function getTareasDto({
   if (!(typeof supervisorId == "number") && !(supervisorId == undefined)) {
     throw Error("DTO: responsableId debe ser entero");
   }
-  estado.forEach((e) => {
-    if (!(e == "EN_PROCESO") && !(e == "EN_REVISION") && !(e == "COMPLETO")) {
-      throw Error("DTO: estado no contiene un valor valido");
-    }
-  });
+  if (!(estado == undefined)) {
+    estado.forEach((e) => {
+      if (!(e == "EN_PROCESO") && !(e == "EN_REVISION") && !(e == "COMPLETO")) {
+        throw Error("DTO: estado no contiene un valor valido");
+      }
+    });
+  }
   if (orderBy == undefined && sort == undefined) {
     orderBy = "deadline";
     sort = "asc";
@@ -89,21 +91,34 @@ export function putTareaDto({
       "DTO: Es necesario especificar al menos una propiedad para actualizar la tarea"
     );
   }
-  if (validator.isEmpty(tarea)) {
-    throw Error("DTO: Tarea debe ser un String con al menos un caracter");
+  if (!(deadline == undefined)) {
+    if (!validator.isDate(deadline.toString())) {
+      throw Error("DTO: Es necesario asignar un deadline valido para la tarea");
+    }
   }
-  if (
-    !(estado == "COMPLETO") &&
-    !(estado == "EN_PROCESO") &&
-    !(estado == "EN_REVISION")
-  ) {
-    throw Error("DTO: estado no contiene un valor valido");
+  if (!(tarea == undefined)) {
+    if (validator.isEmpty(tarea)) {
+      throw Error("DTO: Tarea debe ser un String con al menos un caracter");
+    }
   }
-  if (!(typeof responsableId == "number")) {
-    throw Error("DTO: responsableId debe ser entero");
+  if (!(tarea == undefined)) {
+    if (
+      !(estado == "COMPLETO") &&
+      !(estado == "EN_PROCESO") &&
+      !(estado == "EN_REVISION")
+    ) {
+      throw Error("DTO: estado no contiene un valor valido");
+    }
   }
-  if (!(typeof supervisorId == "number")) {
-    throw Error("DTO: responsableId debe ser entero");
+  if (!(responsableId == undefined)) {
+    if (!(typeof responsableId == "number")) {
+      throw Error("DTO: responsableId debe ser entero");
+    }
+  }
+  if (!(supervisorId == undefined)) {
+    if (!(typeof supervisorId == "number")) {
+      throw Error("DTO: responsableId debe ser entero");
+    }
   }
 
   return { tarea, responsableId, supervisorId, deadline, estado };

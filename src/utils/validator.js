@@ -33,15 +33,51 @@ export async function validarUsuario(req, res, next) {
 }
 
 export async function validarSuperadmin(req, res, next) {
-  const creador = await prisma.usuarios.findUnique({
-    where: { id: req.body.creadorId },
+  const usuario = await prisma.usuarios.findUnique({
+    where: { id: req.body.usuarioId },
     select: { tipoUsuario: true },
   });
-  if (!(creador.tipoUsuario == "SUPERADMIN")) {
+  if (!(usuario.tipoUsuario == "SUPERADMIN")) {
     return res.status(401).json({
       message: "Se necesita privilegios de Superadministrador",
     });
   }
-  req.usuario = creador;
+  req.usuario = usuario;
+  next();
+}
+
+export async function validarPermisoPutTarea(req, res, next) {
+  const usuario = await prisma.usuarios.findUnique({
+    where: { id: req.body.usuarioId },
+  });
+  const tarea = await prisma.tareas.findUnique({
+    where: { id: +req.params.id },
+  });
+  if (
+    usuario.tipoUsuario == "SUPERADMIN" ||
+    usuario.id == tarea.supervisorId ||
+    usuario.id == tarea.responsableId
+  ) {
+  } else {
+    return res.status(401).json({
+      message: "El usuario no tiene permiso de editar esta tarea",
+    });
+  }
+  next();
+}
+
+export async function validarPermisoDeleteTarea(req, res, next) {
+  const usuario = await prisma.usuarios.findUnique({
+    where: { id: req.body.usuarioId },
+  });
+  const tarea = await prisma.tareas.findUnique({
+    where: { id: +req.params.id },
+  });
+  if (usuario.tipoUsuario == "SUPERADMIN" || usuario.id == tarea.supervisorId) {
+  } else {
+    return res.status(401).json({
+      message: "El usuario no tiene permiso de eliminar esta tarea",
+    });
+  }
   next();
 }

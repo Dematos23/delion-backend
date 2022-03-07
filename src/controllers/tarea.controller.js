@@ -59,17 +59,18 @@ export class TareaController {
   }
 
   static async putTarea(req, res) {
-    const id = +req.params.id;
-    const { tarea, responsableId, deadline, estado, supervisorId } =
-      putTareaDto(req.body);
-    const data = {
-      tarea,
-      estado,
-      deadline: new Date(deadline),
-      responsableId,
-      supervisorId,
-    };
     try {
+      const id = +req.params.id;
+      const { tarea, responsableId, deadline, estado, supervisorId } =
+        putTareaDto(req.body);
+      const data = {
+        tarea,
+        estado,
+        deadline: new Date(deadline),
+        responsableId,
+        supervisorId,
+      };
+
       const resultado = await TareaService.putTarea(id, data);
       return res.status(201).json(resultado);
     } catch (error) {
