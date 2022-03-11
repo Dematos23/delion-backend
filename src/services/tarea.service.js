@@ -71,7 +71,11 @@ export class TareaService {
   static async getTarea(id) {
     const tarea = await prisma.tareas.findUnique({
       where: { id },
-      include: { archivos: { select: { nombre: true, url: true } } },
+      include: {
+        archivos: { select: { nombre: true, url: true } },
+        responsable: { select: { nombre: true, apellido: true } },
+        supervisor: { select: { nombre: true, apellido: true } },
+      },
       rejectOnNotFound: false,
     });
     if (!tarea) {
