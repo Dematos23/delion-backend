@@ -7,6 +7,7 @@ export function crearTareaDto({
   supervisorId,
   estado,
   deadline,
+  descripcion,
 }) {
   if (validator.isEmpty(tarea)) {
     throw Error("DTO: El nombre de la tarea no puede estar vacío");
@@ -30,7 +31,18 @@ export function crearTareaDto({
   ) {
     throw Error("DTO: estado no contiene un valor valido");
   }
-  return { tarea, creadorId, responsableId, supervisorId, deadline, estado };
+  if (!(typeof descripcion == "string")) {
+    throw Error("DTO: Descrpción debe ser de tipo String");
+  }
+  return {
+    tarea,
+    creadorId,
+    responsableId,
+    supervisorId,
+    deadline,
+    estado,
+    descripcion,
+  };
 }
 
 export function getTareasDto({

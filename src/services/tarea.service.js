@@ -46,6 +46,7 @@ export class TareaService {
           archivos: { select: { nombre: true, url: true } },
           responsable: { select: { id: true, nombre: true, apellido: true } },
           supervisor: { select: { id: true, nombre: true, apellido: true } },
+          descripcion: true,
         },
         orderBy: { [data.orderBy]: data.sort },
       });
@@ -56,7 +57,6 @@ export class TareaService {
           archivo.url = nuevaUrl;
         });
       });
-
       return tareas;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {

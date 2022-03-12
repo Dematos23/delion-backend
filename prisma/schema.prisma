@@ -35,6 +35,7 @@ model Tareas {
   updatedAt     DateTime   @updatedAt @map(name: "updated_at")
   //
   tarea         String
+  descripcion   String     @default("")
   deadline      DateTime
   //
   estado        estados
