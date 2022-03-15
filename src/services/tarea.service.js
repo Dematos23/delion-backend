@@ -6,7 +6,6 @@ export class TareaService {
   static async crearTarea(data) {
     try {
       const nuevaTarea = await prisma.tareas.create({ data });
-      console.log(data);
       return nuevaTarea;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {

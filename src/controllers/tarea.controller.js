@@ -28,6 +28,7 @@ export class TareaController {
       const resultado = await TareaService.getTareas(data);
       return res.status(200).json(resultado);
     } catch (error) {
+      console.log(data);
       return res.status(400).json({
         message: "CONTROLLER Error al consultar las tareas",
         content: error.message,

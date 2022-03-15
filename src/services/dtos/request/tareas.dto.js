@@ -21,7 +21,7 @@ export function crearTareaDto({
   if (!(typeof supervisorId == "number")) {
     throw Error("DTO: Es necesario indicar el id del supervisor => Int");
   }
-  if (!validator.isDate(deadline.toString())) {
+  if (validator.isEmpty(deadline)) {
     throw Error("DTO: Es necesario asignar un deadline para la tarea");
   }
   if (
@@ -57,6 +57,7 @@ export function getTareasDto({
     supervisorId == undefined &&
     estado == undefined
   ) {
+    // console.log(orderBy, sort, responsableId, supervisorId, estado);
     throw Error("DTO: No se ha indicado ningún criterio de filtrado");
   }
   if ((orderBy && sort == undefined) || (orderBy == undefined && sort)) {
@@ -73,6 +74,7 @@ export function getTareasDto({
   if (!(estado == undefined)) {
     estado.forEach((e) => {
       if (!(e == "EN_PROCESO") && !(e == "EN_REVISION") && !(e == "COMPLETO")) {
+        console.log(estado);
         throw Error("DTO: estado no contiene un valor valido");
       }
     });
@@ -104,7 +106,7 @@ export function putTareaDto({
     );
   }
   if (!(deadline == undefined)) {
-    if (!validator.isDate(deadline.toString())) {
+    if (validator.isEmpty(deadline)) {
       throw Error("DTO: Es necesario asignar un deadline valido para la tarea");
     }
   }
