@@ -8,18 +8,12 @@ import {
 
 export const tareaRouter = Router();
 
+tareaRouter.route("/tarea").post(validarUsuario, TareaController.crearTarea);
+tareaRouter.route("/tareas").post(validarUsuario, TareaController.getTareas);
 tareaRouter
-  .route("/tarea")
-  .post(validarUsuario, TareaController.crearTarea);
-tareaRouter
-  .route("/tareas")
-  .post(validarUsuario, TareaController.getTareas);
+  .route("/deletetareas/:id")
+  .post(validarUsuario, validarPermisoDeleteTarea, TareaController.deleteTarea);
 tareaRouter
   .route("/tareas/:id")
   .get(validarUsuario, TareaController.getTarea)
-  .put(validarUsuario, validarPermisoPutTarea, TareaController.putTarea)
-  .delete(
-    validarUsuario,
-    validarPermisoDeleteTarea,
-    TareaController.deleteTarea
-  );
+  .put(validarUsuario, validarPermisoPutTarea, TareaController.putTarea);
