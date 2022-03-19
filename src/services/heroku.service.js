@@ -9,9 +9,9 @@ const { PrismaClient } = Prisma;
 const prisma = new PrismaClient();
 
 export async function main() {
-  //   await equiposSeed(prisma);
-  //   await adminSeed(prisma);
-  //   await usuariosSeed(prisma);
-  //   await tareasSeed(prisma);
+  // await equiposSeed(prisma);
+  await adminSeed(prisma);
+  await usuariosSeed(prisma);
+  await tareasSeed(prisma);
   return { message: "Heroku Seed completo" };
 }

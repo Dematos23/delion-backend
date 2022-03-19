@@ -24,7 +24,7 @@ model Usuarios {
   creador     Tareas[] @relation("creador")
   responsable Tareas[] @relation("responsable")
   supervisor  Tareas[] @relation("supervisor")
-  equipo      Equipos? @relation(fields: [equiposId], references: [id])
+  // equipo      Equipos? @relation(fields: [equiposId], references: [id])
   equiposId   Int?     @map("equipos_id")
   @@map(name: "usuarios")
 }
@@ -62,12 +62,12 @@ model Archivos {
   nombre    String   @default("archivo")
 }
 
-model Equipos {
-  id        Int        @id @unique @default(autoincrement())
-  createdAt DateTime   @default(now()) @map("created_at")
-  nombre    String     @unique
-  miembros  Usuarios[]
-}
+// model Equipos {
+//   id        Int        @id @unique @default(autoincrement())
+//   createdAt DateTime   @default(now()) @map("created_at")
+//   nombre    String     @unique
+//   miembros  Usuarios[]
+// }
 
 enum tiposUsuario {
   SUPERADMIN
