@@ -13,7 +13,7 @@ export default async (prisma) => {
       email: "dmatos@estudiodelion.com.pe",
       password,
       tipoUsuario: "SUPERADMIN",
-      equiposId: equipo.id,
+      // equiposId: equipo.id,
     },
     update: {
       password,
