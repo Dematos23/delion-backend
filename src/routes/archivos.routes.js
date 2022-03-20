@@ -6,4 +6,5 @@ export const archivosTareaRouter = Router();
 
 archivosTareaRouter
   .route("/archivosTareas")
-  .post(validarUsuario, ArchivosTareaController.crearArchivo);
+  .post(validarUsuario, ArchivosTareaController.crearArchivo)
+  .delete(validarUsuario, ArchivosTareaController.eliminarArchivo);

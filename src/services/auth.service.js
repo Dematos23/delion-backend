@@ -29,7 +29,13 @@ export class AuthService {
         process.env.JWT_SECRET,
         { expiresIn: "24h" }
       );
-      return { message: "ok", token, usuarioId: usuarioEcontrado.id };
+      return {
+        message: "ok",
+        token,
+        usuarioId: usuarioEcontrado.id,
+        nombre: usuarioEcontrado.nombre,
+        apellido: usuarioEcontrado.apellido,
+      };
     } else {
       return { message: "Credenciales incorrectas" };
     }
