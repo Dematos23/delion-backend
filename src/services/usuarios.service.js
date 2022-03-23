@@ -79,12 +79,26 @@ export class UsuariosService {
       const tareasSinResponsable = await prisma.tareas.findMany({
         where: { responsableId: id },
       });
-      tareasSinResponsable.forEach((tarea) => {
-        tarea.responsableId = tarea.supervisorId;
-      });
-      // const usuarioEliminado = await prisma.usuarios.delete({ where: { id } });
-      // return usuarioEliminado;
-      return "hola";
+      await Promise.all(
+        tareasSinResponsable.map(async (tarea) => {
+          const tareaActualizada = await prisma.tareas.updateMany({
+            data: {
+              responsableId: tarea.supervisorId,
+              creadorId:
+                tarea.creadorId === id ? tarea.supervisorId : tarea.creadorId,
+            },
+            where: {
+              id: tarea.id,
+            },
+          });
+          return tareaActualizada;
+          // tarea.responsableId = tarea.supervisorId;
+        })
+      );
+      console.log(id);
+      const usuarioEliminado = await prisma.usuarios.delete({ where: { id } });
+      console.log(usuarioEliminado);
+      return usuarioEliminado;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
