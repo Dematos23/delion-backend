@@ -99,8 +99,8 @@ model Expedientes {
   resolucion        String   @unique
   resolucionAno     Int      @map("resolucion_ano")
   fechaResolucion   DateTime @map("fecha_resolucion")
-  Marcas            Marcas?  @relation(fields: [marcasId], references: [id])
-  marcasId          Int?
+  // Marcas            Marcas?  @relation(fields: [marcasId], references: [id])
+  // marcasId          Int?
   Casos             Casos?   @relation(fields: [casosId], references: [id])
   casosId           Int?
 }
@@ -109,16 +109,17 @@ model Marcas {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now()) @map(name: "created_at")
 
-  expedientes Expedientes[]
+  // expedientes Expedientes[]
 
-  nombre           String
-  clase            Int[]
+  nombre           String?
+  clases           Int[]
   logo             ArchivosMarcas?
-  tipo             tipoMarca
+  descripcionLogo  String          @map("descripcion_logo")
+  tipoMarca        tipoMarca       @map("tipo_marca")
   productos        String
-  certificado      Int             @unique
-  fechaVencimiento DateTime        @map("fecha_vencimiento")
-  fechaPublicacion DateTime        @map("fecha_publicacion")
+  certificado      Int?            @unique
+  fechaVencimiento DateTime?       @map("fecha_vencimiento")
+  fechaPublicacion DateTime?       @map("fecha_publicacion")
 
   @@map("marcas")
 }

@@ -6,6 +6,7 @@ import { tareaRouter } from "./routes/tarea.routes.js";
 import { archivosTareaRouter } from "./routes/archivos.routes.js";
 import { usuariosRouter } from "./routes/usuarios.routes.js";
 import { herokuRouter } from "./routes/heroku.routes.js";
+import { marcasRouter } from "./routes/marcas.routes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(tareaRouter);
 app.use(archivosTareaRouter);
 app.use(usuariosRouter);
 app.use(herokuRouter);
+app.use(marcasRouter);
 
 const PORT = process.env.PORT ?? 5432;
 
