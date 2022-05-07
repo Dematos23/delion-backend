@@ -14,7 +14,6 @@ export class TareaController {
       return res.status(201).json(resultado);
     } catch (error) {
       console.log(error);
-      console.log(req);
       return res.status(400).json({
         message: "CONTROLLER Error al crear la tarea",
         content: error.message,

@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // await equiposSeed(prisma);
-  // await adminSeed(prisma);
+  await adminSeed(prisma);
   // await usuariosSeed(prisma);
   // await tareasSeed(prisma);
 }
