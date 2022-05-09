@@ -1,5 +1,5 @@
-import { MarcasService } from "../services/marcas.service.js";
-import { postMarcaDto } from "../services/dtos/request/marcas.dto.js";
+import { MarcasService } from "../../services/marcas.service.js";
+import { postMarcaDto } from "../../services/dtos/request/marcas.dto.js";
 import csvtojson from "csvtojson";
 
 export class MarcasController {

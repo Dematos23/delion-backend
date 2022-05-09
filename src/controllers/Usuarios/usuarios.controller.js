@@ -1,10 +1,10 @@
-import { UsuariosService } from "../services/usuarios.service.js";
+import { UsuariosService } from "../../services/usuarios.service.js";
 import {
   usuariosDto,
   deleteUsuarioDto,
   getUsuarioDto,
   putUsuarioDto,
-} from "../services/dtos/request/usuarios.dto.js";
+} from "../../services/dtos/request/usuarios.dto.js";
 
 export class UsuariosController {
   static async crearUsuario(req, res) {

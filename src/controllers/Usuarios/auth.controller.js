@@ -1,5 +1,5 @@
-import { AuthService } from "../services/auth.service.js";
-import { loginDto } from "../services/dtos/request/login.dto.js";
+import { AuthService } from "../../services/auth.service.js";
+import { loginDto } from "../../services/dtos/request/login.dto.js";
 
 export async function login(req, res) {
   try {

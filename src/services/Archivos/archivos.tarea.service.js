@@ -1,5 +1,5 @@
-import { s3 } from "../s3.js";
-import { prisma } from "../prisma.js";
+import { s3 } from "../../s3.js";
+import { prisma } from "../../prisma.js";
 
 export class ArchivosTareaService {
   static async crearArchivo(data) {

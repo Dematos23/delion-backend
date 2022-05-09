@@ -2,8 +2,8 @@ import {
   crearTareaDto,
   getTareasDto,
   putTareaDto,
-} from "../services/dtos/request/tareas.dto.js";
-import { TareaService } from "../services/tarea.service.js";
+} from "../../services/dtos/request/tareas.dto.js";
+import { TareaService } from "../../services/tarea.service.js";
 
 export class TareaController {
   static async crearTarea(req, res) {

@@ -13,13 +13,7 @@ export default async (prisma) => {
       "estudiodelion.com.pe"
     );
     const tiposUsuario = ["ADMIN", "SUPERVISOR", "USUARIO"];
-    // const equipos = [
-    //   "COBRANZA",
-    //   "INTERNACIONAL",
-    //   "HISPANA",
-    //   "COBRANZA",
-    //   "GERENCIA",
-    // ];
+    const modulos = ["CASOS", "MARCAS"];
 
     function entero(min, max) {
       min = Math.ceil(min);
@@ -34,7 +28,7 @@ export default async (prisma) => {
         email,
         password,
         tipoUsuario: tiposUsuario[entero(0, tiposUsuario.length)],
-        // equiposId: entero(1, equipos.length),
+        modulos,
       },
     });
   }

@@ -13,15 +13,19 @@ export class UsuariosService {
           email: data.email,
           password,
           tipoUsuario: data.tipoUsuario,
-          equiposId: data.equipoId,
+          modulos: data.modulos,
         },
       });
 
-      return nuevoUsuario;
+      return {
+        nuevoUsuario,
+        message: "Usuario creado exitósamente",
+      };
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
-          message: "SERVICE Error al crear usuario",
+          message: "Error al crear usuario",
+          location: "SERVICE",
           content: error.message,
         };
       }
@@ -38,6 +42,7 @@ export class UsuariosService {
           apellido: true,
           email: true,
           tipoUsuario: true,
+          modulos: true,
         },
         rejectOnNotFound: true,
       });
@@ -45,7 +50,8 @@ export class UsuariosService {
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
-          message: "SERVICE Error al consultar usuario",
+          message: "Usuario no encontrado",
+          location: "SERVICE",
           content: error.message,
         };
       }
@@ -59,15 +65,16 @@ export class UsuariosService {
           id: true,
           nombre: true,
           apellido: true,
-          email: true,
           tipoUsuario: true,
+          modulos: true,
         },
       });
       return usuarios;
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
-          message: "SERVICE Error al crear usuarios",
+          message: "Error al cargar usuarios",
+          location: "SERVICE",
           content: error.message,
         };
       }
@@ -76,33 +83,36 @@ export class UsuariosService {
 
   static async deleteUsuario(id) {
     try {
-      const tareasSinResponsable = await prisma.tareas.findMany({
-        where: { responsableId: id },
-      });
-      await Promise.all(
-        tareasSinResponsable.map(async (tarea) => {
-          const tareaActualizada = await prisma.tareas.updateMany({
-            data: {
-              responsableId: tarea.supervisorId,
-              creadorId:
-                tarea.creadorId === id ? tarea.supervisorId : tarea.creadorId,
-            },
-            where: {
-              id: tarea.id,
-            },
-          });
-          return tareaActualizada;
-          // tarea.responsableId = tarea.supervisorId;
-        })
-      );
-      console.log(id);
+      // const tareasSinResponsable = await prisma.tareas.findMany({
+      //   where: { responsableId: id },
+      // });
+      // await Promise.all(
+      //   tareasSinResponsable.map(async (tarea) => {
+      //     const tareaActualizada = await prisma.tareas.updateMany({
+      //       data: {
+      //         responsableId: tarea.supervisorId,
+      //         creadorId:
+      //           tarea.creadorId === id ? tarea.supervisorId : tarea.creadorId,
+      //       },
+      //       where: {
+      //         id: tarea.id,
+      //       },
+      //     });
+      //     return tareaActualizada;
+      //     // tarea.responsableId = tarea.supervisorId;
+      //   })
+      // );
+
       const usuarioEliminado = await prisma.usuarios.delete({ where: { id } });
-      console.log(usuarioEliminado);
-      return usuarioEliminado;
+      return {
+        usuarioEliminado,
+        message: "Usuarlio eliminado con éxito",
+      };
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
-          message: "SERVICE Error al eliminar el usuario",
+          message: "Error al eliminar el usuario",
+          location: "SERVICE",
           content: error.message,
         };
       }
@@ -111,10 +121,10 @@ export class UsuariosService {
 
   static async putUsuario(id, data) {
     try {
-      const usuario = await prisma.usuarios.findUnique({ where: { id } });
-      if (usuario === undefined) {
-        return { message: `No existe el usuario que se busca actualizar` };
-      }
+      // const usuario = await prisma.usuarios.findUnique({ where: { id } });
+      // if (usuario === undefined) {
+      //   return { message: `No se encontró el usuario que se busca actualizar` };
+      // }
       const password = hashSync(data.password, 10);
       const usuarioActualizado = await prisma.usuarios.update({
         where: { id },
@@ -124,13 +134,18 @@ export class UsuariosService {
           email: data.email,
           password,
           tipoUsuario: data.tipoUsuario,
+          modulos: data.modulos,
         },
       });
-      return usuarioActualizado;
+      return {
+        usuarioActualizado,
+        message: `El usuario ${usuarioActualizado.nombre} ${usuarioActualizado.apellido} fue actualizado correctamente`,
+      };
     } catch (error) {
       if (error instanceof Prisma.Prisma.PrismaClientKnownRequestError) {
         return {
-          message: "SERVICE Error al actulizar el usuario",
+          message: "Error al actulizar el usuario",
+          location: "SERVICE",
           content: error.message,
         };
       }

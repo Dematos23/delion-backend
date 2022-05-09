@@ -20,13 +20,18 @@ model Usuarios {
   tipoUsuario tiposUsuario @map("tipo_usuario")
 
   //
-  // modulos     ModulosUsuarios[]
-  creador     Tareas[] @relation("creador")
-  responsable Tareas[] @relation("responsable")
-  supervisor  Tareas[] @relation("supervisor")
+  modulos     modulos[]
+  creador     Tareas[]  @relation("creador")
+  responsable Tareas[]  @relation("responsable")
+  supervisor  Tareas[]  @relation("supervisor")
   // equipo      Equipos? @relation(fields: [equiposId], references: [id])
-  equiposId   Int?     @map("equipos_id")
+  equiposId   Int?      @map("equipos_id")
   @@map(name: "usuarios")
+}
+
+enum modulos {
+  CASOS
+  MARCAS
 }
 
 model Tareas {
@@ -64,24 +69,17 @@ model ArchivosTareas {
   @@map("archivos_tareas")
 }
 
-// model Equipos {
-//   id        Int        @id @unique @default(autoincrement())
-//   createdAt DateTime   @default(now()) @map("created_at")
-//   nombre    String     @unique
-//   miembros  Usuarios[]
-// }
+enum estados {
+  COMPLETO
+  EN_PROCESO
+  EN_REVISION
+}
 
 enum tiposUsuario {
   SUPERADMIN
   ADMIN
   SUPERVISOR
   USUARIO
-}
-
-enum estados {
-  COMPLETO
-  EN_PROCESO
-  EN_REVISION
 }
 
 model Casos {
@@ -99,32 +97,33 @@ model Expedientes {
   resolucion        String   @unique
   resolucionAno     Int      @map("resolucion_ano")
   fechaResolucion   DateTime @map("fecha_resolucion")
-  // Marcas            Marcas?  @relation(fields: [marcasId], references: [id])
-  // marcasId          Int?
-  Casos             Casos?   @relation(fields: [casosId], references: [id])
-  casosId           Int?
+
+  Marca   Marcas? @relation(fields: [marcaId], references: [id])
+  marcaId Int
+  Caso    Casos?  @relation(fields: [casosId], references: [id])
+  casosId Int?
 }
 
 model Marcas {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now()) @map(name: "created_at")
 
-  // expedientes Expedientes[]
+  expedientes Expedientes[]
 
   nombre           String?
   clases           Int[]
-  logo             ArchivosMarcas?
-  descripcionLogo  String          @map("descripcion_logo")
-  tipoMarca        tipoMarca       @map("tipo_marca")
+  tipoMarca        tipoMarca @map("tipo_marca")
   productos        String
-  certificado      Int?            @unique
-  fechaVencimiento DateTime?       @map("fecha_vencimiento")
-  fechaPublicacion DateTime?       @map("fecha_publicacion")
+  logo             Logos?
+  descripcionLogo  String    @map("descripcion_logo")
+  certificado      Int?      @unique
+  fechaVencimiento DateTime? @map("fecha_vencimiento")
+  fechaPublicacion DateTime? @map("fecha_publicacion")
 
   @@map("marcas")
 }
 
-model ArchivosMarcas {
+model Logos {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now()) @map(name: "created_at")
   url       String   @unique
@@ -133,12 +132,6 @@ model ArchivosMarcas {
   Marcas    Marcas   @relation(fields: [marcaId], references: [id])
 
   @@map("archivos_marcas")
-}
-
-enum marcaEstado {
-  OTORGADO
-  DENAGADO
-  EN_PROCESO
 }
 
 enum tipoMarca {

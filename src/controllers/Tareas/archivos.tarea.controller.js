@@ -1,6 +1,6 @@
-import { ArchivosTareaService } from "../services/archivos.tarea.service.js";
-import { archivosTareaDto } from "../services/dtos/request/archivos.tarea.dto.js";
-import { prisma } from "../prisma.js";
+import { ArchivosTareaService } from "../../services/Archivos/archivos.tarea.service.js";
+import { archivosTareaDto } from "../../services/dtos/request/archivos.tarea.dto.js";
+import { prisma } from "../../prisma.js";
 
 export class ArchivosTareaController {
   static async crearArchivo(req, res) {
